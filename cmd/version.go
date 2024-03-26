@@ -14,9 +14,9 @@ func init() {
 // 版本信息
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "Show service version",
+	Short: "查看当前版本信息",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("git commit id is", common.Version)
+		fmt.Println("version is", common.Version)
 		os.Exit(0)
 	},
 }

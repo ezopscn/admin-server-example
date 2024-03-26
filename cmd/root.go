@@ -9,7 +9,7 @@ import (
 // 命令总入口
 var rootCmd = &cobra.Command{
 	Use:   "admin-server",
-	Short: "ADMIN-SERVER is a RBAC management system.",
+	Short: "ADMIN-SERVER 是一个由 Golang 开发的 RBAC 权限管理系统后端.",
 	// 如果有相关的 action 要执行，请取消下面这行代码的注释
 	// Run: func(cmd *cobra.Command, args []string) { },
 }

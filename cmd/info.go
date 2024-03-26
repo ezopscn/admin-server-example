@@ -13,10 +13,9 @@ func init() {
 // 开发者信息
 var infoCmd = &cobra.Command{
 	Use:   "info",
-	Short: "Show service information",
+	Short: "查看服务开发者信息",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Service is developed by Jayce.")
-		fmt.Println("You can contact me with email <ezops.cn@gmail.com>.")
+		fmt.Println("开发人员：Jayce <ezops.cn@gmail.com>.")
 		os.Exit(0)
 	},
 }
