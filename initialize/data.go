@@ -10,4 +10,5 @@ func MigrateData() {
 	data.MenuInit()       // 菜单数据
 	data.UserInit()       // 用户数据
 	data.APITypeInit()    // 接口类型数据
+	data.SettingInit()    // 系统设置数据
 }

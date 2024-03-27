@@ -16,7 +16,7 @@ func NewInterfaceResult(result interface{}, error error) *InterfaceResult {
 // 解析结果
 func (r *InterfaceResult) Unwrap() interface{} {
 	if r.Error != nil {
-		common.SystemLog.Debug("Redis 缓存查询失败,", r.Error.Error())
+		common.SystemLog.Debug("Redis 缓存查询失败，", r.Error.Error())
 	}
 	return r.Result
 }
@@ -24,7 +24,7 @@ func (r *InterfaceResult) Unwrap() interface{} {
 // 查询失败返回默认值
 func (r *InterfaceResult) UnwrapWithDefaultValue(v interface{}) interface{} {
 	if r.Error != nil {
-		common.SystemLog.Debug("Redis 缓存查询失败, 返回默认值,", r.Error.Error())
+		common.SystemLog.Debug("Redis 缓存查询失败，返回默认值：", r.Error.Error())
 		return v
 	}
 	return r.Result
@@ -33,7 +33,7 @@ func (r *InterfaceResult) UnwrapWithDefaultValue(v interface{}) interface{} {
 // 查询失败执行函数
 func (r *InterfaceResult) UnwrapWithFunc(f func() interface{}) interface{} {
 	if r.Error != nil {
-		common.SystemLog.Debug("Redis 缓存查询失败, 返回执行函数,", r.Error.Error())
+		common.SystemLog.Debug("Redis 缓存查询失败，返回执行函数：", r.Error.Error())
 		return f()
 	}
 	return r.Result

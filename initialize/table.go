@@ -17,4 +17,5 @@ func MigrateTable() {
 	_ = common.DB.AutoMigrate(new(model.Role))       // 角色
 	_ = common.DB.AutoMigrate(new(model.APIType))    // 接口类型
 	_ = common.DB.AutoMigrate(new(model.API))        // 接口
+	_ = common.DB.AutoMigrate(new(model.Setting))    // 系统设置
 }

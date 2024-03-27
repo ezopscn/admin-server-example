@@ -26,7 +26,7 @@ func (attrs OperationAttrs) Find(name string) *InterfaceResult {
 			return NewInterfaceResult(attr.Value, nil)
 		}
 	}
-	return NewInterfaceResult(nil, fmt.Errorf("不支持该方法,", name))
+	return NewInterfaceResult(nil, fmt.Errorf("不支持该方法：%s", name))
 }
 
 // 设置过期时间

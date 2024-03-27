@@ -16,7 +16,7 @@ func NewStringResult(result string, error error) *StringResult {
 // 解析结果
 func (r *StringResult) Unwrap() string {
 	if r.Error != nil {
-		common.SystemLog.Debug("Redis 缓存查询失败,", r.Error.Error())
+		common.SystemLog.Debug("Redis 缓存查询失败，", r.Error.Error())
 	}
 	return r.Result
 }
@@ -24,7 +24,7 @@ func (r *StringResult) Unwrap() string {
 // 查询失败返回默认值
 func (r *StringResult) UnwrapWithDefaultValue(v string) string {
 	if r.Error != nil {
-		common.SystemLog.Debug("Redis 缓存查询失败, 返回默认值,", r.Error.Error())
+		common.SystemLog.Debug("Redis 缓存查询失败，返回默认值：", r.Error.Error())
 		return v
 	}
 	return r.Result
@@ -33,7 +33,7 @@ func (r *StringResult) UnwrapWithDefaultValue(v string) string {
 // 查询失败执行函数
 func (r *StringResult) UnwrapWithFunc(f func() string) string {
 	if r.Error != nil {
-		common.SystemLog.Debug("Redis 缓存查询失败, 返回执行函数,", r.Error.Error())
+		common.SystemLog.Debug("Redis 缓存查询失败，返回执行函数：", r.Error.Error())
 		return f()
 	}
 	return r.Result

@@ -12,7 +12,8 @@ type User struct {
 	Phone                  string        `gorm:"uniqueIndex:uidx_phone;comment:手机号" json:"phone"`
 	ShowPhone              *uint         `gorm:"type:tinyint(1);default:1;comment:是否显示手机号(0=不显示,1=显示)" json:"show_phone"`
 	Email                  string        `gorm:"uniqueIndex:uidx_email;comment:邮箱" json:"email"`
-	Password               string        `gorm:"not null;comment:密码" json:"-"` // json 中不显示 password 字段
+	Password               string        `gorm:"not null;comment:密码" json:"-"` // json 中不显示该字段
+	Secret                 string        `gorm:"comment:双因子认证密钥" json:"-"`     // json 中不显示该字段
 	JoinTime               carbon.Carbon `gorm:"comment:入职日期" json:"join_time"`
 	DepartmentId           uint          `gorm:"comment:部门id" json:"department_id"` // 关联部门
 	Department             *Department   `gorm:"foreignKey:DepartmentId;comment:部门" json:"department,omitempty"`

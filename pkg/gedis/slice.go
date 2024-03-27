@@ -16,7 +16,7 @@ func NewSliceResult(result []interface{}, error error) *SliceResult {
 // 解析结果
 func (r *SliceResult) Unwrap() []interface{} {
 	if r.Error != nil {
-		common.SystemLog.Debug("Redis 缓存查询失败,", r.Error.Error())
+		common.SystemLog.Debug("Redis 缓存查询失败，", r.Error.Error())
 	}
 	return r.Result
 }
@@ -24,7 +24,7 @@ func (r *SliceResult) Unwrap() []interface{} {
 // 查询失败返回默认值
 func (r *SliceResult) UnwrapWithDefaultValue(v []interface{}) []interface{} {
 	if r.Error != nil {
-		common.SystemLog.Debug("Redis 缓存查询失败, 返回默认值,", r.Error.Error())
+		common.SystemLog.Debug("Redis 缓存查询失败，返回默认值：", r.Error.Error())
 		return v
 	}
 	return r.Result
@@ -33,7 +33,7 @@ func (r *SliceResult) UnwrapWithDefaultValue(v []interface{}) []interface{} {
 // 查询失败执行函数
 func (r *SliceResult) UnwrapWithFunc(f func() []interface{}) []interface{} {
 	if r.Error != nil {
-		common.SystemLog.Debug("Redis 缓存查询失败, 返回执行函数,", r.Error.Error())
+		common.SystemLog.Debug("Redis 缓存查询失败，返回执行函数：", r.Error.Error())
 		return f()
 	}
 	return r.Result

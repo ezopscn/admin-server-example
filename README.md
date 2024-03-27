@@ -35,6 +35,7 @@
 - [x] Carbon：简单、语义化且对开发人员友好的 datetime 包 [:octocat:](https://github.com/golang-module/carbon)
 - [x] Redis：Redis 客户端 [:octocat:](https://github.com/redis/go-redis)
 - [x] Jwt：用户认证, 登入登出一键搞定 [:octocat:](https://github.com/appleboy/gin-jwt)
+- [x] OPT：OPT 双因子认证库 [:octocat:](https://github.com/pquerna/otp)
 - [x] GoMail：发送邮件 [:octocat:](https://github.com/itrepablik/gomail)
 - [x] Casbin：一个强大的、高效的开源访问控制框架 [:octocat:](https://casbin.org/zh/docs/overview)
 
@@ -74,6 +75,9 @@ go get -u github.com/redis/go-redis/v9
 
 # JWT 认证
 go get -u github.com/appleboy/gin-jwt/v2
+
+# OPT 认证
+go get -u github.com/pquerna/otp
 
 # 邮件发送
 go get -u github.com/itrepablik/gomail

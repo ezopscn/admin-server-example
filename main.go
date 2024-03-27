@@ -6,6 +6,7 @@ import (
 	"os"
 	"server/cmd"
 	"server/common"
+	"server/pkg/utils"
 )
 
 //go:embed config/*
@@ -33,6 +34,8 @@ func main() {
 	if string(version) != "" {
 		common.Version = string(version)
 	}
+
+	utils.GenerateTOTPSecret("admin")
 
 	// 入口
 	cmd.Execute()

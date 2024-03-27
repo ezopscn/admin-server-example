@@ -31,6 +31,7 @@ var (
 
 // 系统信息
 var (
+	APPName     = "ADMIN-EXAMPLE"       // 应用名称
 	APIPrefix   = "/api/v1"             // API 前缀
 	Version     = "1.0"                 // 版本信息
 	ConfigFile  = "config/default.yaml" // 默认配置文件
