@@ -16,6 +16,9 @@ type Configuration struct {
 	System SystemConfiguration `mapstructure:"system" json:"system"`
 	Log    LogConfiguration    `mapstructure:"log" json:"log"`
 	MySQL  MySQLConfiguration  `mapstructure:"mysql" json:"mysql"`
+	Redis  RedisConfiguration  `mapstructure:"redis" json:"redis"`
+	JWT    JWTConfiguration    `mapstructure:"jwt" json:"jwt"`
+	Login  LoginConfiguration  `mapstructure:"login" json:"login"`
 }
 
 // 系统配置
@@ -55,4 +58,32 @@ type MySQLConfiguration struct {
 	MaxOpenConns int    `mapstructure:"max-open-conns" json:"max_open_conns"`
 	MaxIdleConns int    `mapstructure:"max-idle-conns" json:"max_idle_conns"`
 	MaxIdleTime  int    `mapstructure:"max-idle-time" json:"max_idle_time"`
+}
+
+// Redis 配置
+type RedisConfiguration struct {
+	Host         string `mapstructure:"host" json:"host"`
+	Port         int    `mapstructure:"port" json:"port"`
+	Database     int    `mapstructure:"database" json:"database"`
+	Password     string `mapstructure:"password" json:"password"`
+	Timeout      int    `mapstructure:"timeout" json:"timeout"`
+	MaxOpenConns int    `mapstructure:"max-open-conns" json:"max_open_conns"`
+	MinIdleConns int    `mapstructure:"min-idle-conns" json:"min_idle_conns"`
+	MaxIdleConns int    `mapstructure:"max-idle-conns" json:"max_idle_conns"`
+	MaxIdleTime  int    `mapstructure:"max-idle-time" json:"max_idle_time"`
+}
+
+// JWT 配置
+type JWTConfiguration struct {
+	Realm   string `mapstructure:"realm" json:"realm"`
+	Key     string `mapstructure:"key" json:"key"`
+	Timeout int    `mapstructure:"timeout" json:"timeout"`
+}
+
+// 登录配置
+type LoginConfiguration struct {
+	WrongTimes     int  `mapstructure:"wrong-times" json:"wrong_times"`
+	LockTime       int  `mapstructure:"lock-time" json:"lock_time"`
+	MultiDevices   bool `mapstructure:"multi-devices" json:"multi_devices"`
+	ResetTokenTime int  `mapstructure:"reset-token-time" json:"reset_token_time"`
 }

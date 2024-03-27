@@ -1,6 +1,7 @@
 package common
 
 import (
+	"github.com/redis/go-redis/v9"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
@@ -25,6 +26,7 @@ var (
 	SystemLog *zap.SugaredLogger // 系统日志工具
 	AccessLog *zap.SugaredLogger // 访问日志工具
 	DB        *gorm.DB           // 数据库连接
+	Cache     *redis.Client      // 缓存连接
 )
 
 // 系统信息

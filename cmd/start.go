@@ -29,6 +29,7 @@ var startCmd = &cobra.Command{
 		initialize.SystemLogger() // 系统日志初始化
 		initialize.AccessLogger() // 访问日志初始化
 		initialize.MySQL()        // 数据库连接初始化
+		initialize.Redis()        // Redis 连接初始化
 		r := initialize.Router()  // 路由初始化
 
 		// 判断参数是否合法
