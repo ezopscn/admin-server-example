@@ -86,7 +86,7 @@ func authenticator(ctx *gin.Context) (interface{}, error) {
 		return nil, errors.New("用户已禁用，请联系管理员")
 	}
 
-	// 7.登录成功
+	// 7.登录正确
 	// 删除错误 redis 中的次数
 	_, _ = conn.Del(key)
 
@@ -98,9 +98,25 @@ func authenticator(ctx *gin.Context) (interface{}, error) {
 			"last_login_time": carbon.Now(),
 		})
 
-	// 8.返回登录信息
-	// 设置 Context，方便后面使用
+	// 8.设置 Context，方便后面使用
 	ctx.Set("Username", user.Username)
+
+	// 9.查看系统是否开启双因子认证
+	var setting model.Setting
+	if err = db.Where("name = ?", "2FA").First(&setting).Error; err != nil {
+		return nil, errors.New("查询双因子认证状态失败")
+	}
+	// 如果开启了双因子认证，则需要判断用户是否绑定设备
+	if setting.Value == "true" {
+		// 没有绑定，则需要让用户绑定
+		if user.Secret == "" {
+			return &user, errors.New("NotBind2FA")
+		}
+		// 已经绑定了，则需要验证用户的验证码
+		if !utils.ValidateTOTPCode(req.VerificationCode, user.Secret) {
+			return nil, errors.New("手机令牌验证码错误")
+		}
+	}
 
 	// 以指针的方式将数据传递给 PayloadFunc 函数继续处理
 	return &user, nil
@@ -159,6 +175,35 @@ func loginResponse(ctx *gin.Context, code int, token string, expire time.Time) {
 
 // 登录失败，验证失败的响应
 func unauthorized(ctx *gin.Context, code int, message string) {
+	// 未绑定设备，需要单独返回
+	if message == "NotBind2FA" {
+		// 获取前面 Context 设置的值，并验证是否合法
+		v, _ := ctx.Get("Username")
+		username, ok := v.(string)
+		if !ok || username == "" {
+			response.FailedWithMessage("获取用户登录信息异常")
+			return
+		}
+
+		// 生成二维码链接
+		key, err := utils.GenerateTOTPKey(username)
+		if err != nil {
+			response.FailedWithMessage("获取 TOTP 信息异常")
+			return
+		}
+		url := key.URL()
+		secret := key.Secret()
+
+		// 保存 Secret 到数据库
+		err = common.DB.Model(&model.User{}).Where("username = ?", username).Update("secret", secret).Error
+		if err != nil {
+			response.FailedWithMessage("保存用户 TOTP Secret 失败")
+			return
+		}
+		response.FailedWithCodeAndData(response.NotBind2FA, gin.H{"url": url})
+		return
+	}
+
 	response.FailedWithCodeAndMessage(response.Unauthorized, message)
 }
 

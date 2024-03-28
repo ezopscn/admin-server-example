@@ -19,16 +19,15 @@ func ComparePassword(hash string, password string) bool {
 	return err == nil
 }
 
-// TOTP 双因子认证 Secret 生成
-func GenerateTOTPSecret(account string) (secret string, err error) {
-	key, err := totp.Generate(totp.GenerateOpts{
+// 生成 TOTP 双因子认证信息
+func GenerateTOTPKey(account string) (key *otp.Key, err error) {
+	key, err = totp.Generate(totp.GenerateOpts{
 		Issuer:      common.APPName,    // 应用名称
 		AccountName: account,           // 用户名称
 		Period:      30,                // 密码的有效时间，一般 30 秒
 		Digits:      otp.DigitsSix,     // 生成的密码长度，一般为 6 位
 		Algorithm:   otp.AlgorithmSHA1, // 用于 HMAC 签名的算法，默认是 SHA1
 	})
-	secret = key.Secret()
 	return
 }
 

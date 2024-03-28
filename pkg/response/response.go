@@ -10,6 +10,7 @@ const (
 	ServerError  = 500
 	Unauthorized = 1000
 	Unactived    = 1001
+	NotBind2FA   = 1002
 )
 
 // 用户状态码对应的错误信息
@@ -22,6 +23,7 @@ const (
 	ServerErrorMessage  = "服务器错误，请联系管理员"
 	UnauthorizedMessage = "用户未登录"
 	UnactivedMessage    = "用户已禁用"
+	NotBind2FAMessage   = "用户未绑定双因子认证设备"
 )
 
 // 用户状态码和消息绑定
@@ -34,6 +36,7 @@ var CustomMessage = map[int]string{
 	ServerError:  ServerErrorMessage,
 	Unauthorized: UnauthorizedMessage,
 	Unactived:    UnactivedMessage,
+	NotBind2FA:   NotBind2FAMessage,
 }
 
 // 统一响应结构体
@@ -75,6 +78,11 @@ func Failed() {
 // 失败，有状态码
 func FailedWithCode(code int) {
 	Result(code, CustomMessage[NotOK], emptyData)
+}
+
+// 失败，有状态码和数据
+func FailedWithCodeAndData(code int, data interface{}) {
+	Result(code, CustomMessage[NotOK], data)
 }
 
 // 失败，有失败信息
