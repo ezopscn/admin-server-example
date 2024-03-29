@@ -31,11 +31,14 @@ var (
 
 // 系统信息
 var (
-	APPName     = "ADMIN-EXAMPLE"       // 应用名称
-	APIPrefix   = "/api/v1"             // API 前缀
-	Version     = "1.0"                 // 版本信息
-	ConfigFile  = "config/default.yaml" // 默认配置文件
-	VersionFile = "config/version"      // 版本配置文件
+	APPName               = "ADMIN-EXAMPLE"       // 应用名称
+	APIPrefix             = "/api/v1"             // API 前缀
+	Version               = "1.0"                 // 版本信息
+	ConfigFile            = "config/default.yaml" // 默认配置文件
+	VersionFile           = "config/version"      // 版本配置文件
+	DefaultPageSize  uint = 1                     // 默认每页显示的数据量
+	MaxPageSize      uint = 100                   // 每次请求最大的数据量，用于保证数据安全性
+	SuperAdminRoleId uint = 1                     // 系统预留超级用户角色 Id
 )
 
 // 时间格式

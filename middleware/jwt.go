@@ -82,7 +82,7 @@ func authenticator(ctx *gin.Context) (interface{}, error) {
 	}
 
 	// 6.密码正确，则进行用户状态校验
-	if user.Status == &common.Disable {
+	if *user.Status == common.Disable {
 		return nil, errors.New("用户已禁用，请联系管理员")
 	}
 
@@ -114,6 +114,8 @@ func authenticator(ctx *gin.Context) (interface{}, error) {
 		}
 		// 已经绑定了，则需要验证用户的验证码
 		if !utils.ValidateTOTPCode(req.VerificationCode, user.Secret) {
+			times += 1
+			conn.Set(key, times, gedis.WithExpire(time.Duration(common.Config.Login.LockTime)*time.Second))
 			return nil, errors.New("手机令牌验证码错误")
 		}
 	}

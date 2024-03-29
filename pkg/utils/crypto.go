@@ -38,3 +38,11 @@ func ValidateTOTPCode(code string, secret string) bool {
 	}
 	return false
 }
+
+// 隐藏手机号中间4位
+func MaskPhone(phone string) string {
+	if len(phone) <= 10 {
+		return phone
+	}
+	return phone[:3] + "****" + phone[len(phone)-4:]
+}
