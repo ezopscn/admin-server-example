@@ -6,6 +6,7 @@ import (
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-module/carbon/v2"
+	"gorm.io/gorm/clause"
 	"server/common"
 	"server/dto"
 	"server/model"
@@ -65,7 +66,7 @@ func authenticator(ctx *gin.Context) (interface{}, error) {
 	var err error
 
 	// 判断用户登录采用的方式，支持使用用户名 / 手机号 / Email
-	dbt := db.Preload("Role")
+	dbt := db.Preload(clause.Associations)
 	if utils.IsPhone(req.Account) {
 		err = dbt.Where("phone = ?", req.Account).First(&user).Error
 	} else if utils.IsEmail(req.Account) {
@@ -142,6 +143,7 @@ func payloadFunc(data interface{}) jwt.MapClaims {
 			"RoleId":        user.Role.Id,      // 角色 Id
 			"RoleName":      user.Role.Name,    // 角色名称
 			"DepartmentId":  user.DepartmentId, // 部门 Id
+			"JobName":       user.JobName,      // 岗位名称
 		}
 	}
 	return jwt.MapClaims{}

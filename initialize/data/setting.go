@@ -12,7 +12,7 @@ var settings = []model.Setting{
 	{
 		BaseModel:   model.BaseModel{Id: 1},
 		Name:        "2FA",
-		Value:       "false",
+		Value:       "true",
 		Description: "是否开启双因子认证设置，开启后用户需要绑定手机，通过实时验证码进行登录",
 	},
 	{
