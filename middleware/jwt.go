@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	jwt "github.com/appleboy/gin-jwt/v2"
@@ -54,8 +55,8 @@ func authenticator(ctx *gin.Context) (interface{}, error) {
 	key := common.GenerateRedisKey(common.RKP.LoginWrongTimes, fmt.Sprintf("%s%s%s", ip, common.RDSKeySeparator, req.Account))
 
 	// 3.获取 redis 中该 IP+用户 错误次数，避免恶意登录
-	var conn = gedis.NewOperation()
-	times := conn.GetInt(key).UnwrapWithDefaultValue(0)
+	var cache = gedis.NewOperation()
+	times := cache.GetInt(key).UnwrapWithDefaultValue(0)
 	if times >= common.Config.Login.WrongTimes {
 		return nil, errors.New("认证次数超过上限，账户已锁定")
 	}
@@ -78,7 +79,7 @@ func authenticator(ctx *gin.Context) (interface{}, error) {
 	// 5.用户查询失败，密码不对，都在原有的 redis 保存的错误次数上 +1，并设置过期时间
 	if err != nil || !utils.ComparePassword(user.Password, req.Password) {
 		times += 1
-		conn.Set(key, times, gedis.WithExpire(time.Duration(common.Config.Login.LockTime)*time.Second))
+		cache.Set(key, times, gedis.WithExpire(time.Duration(common.Config.Login.LockTime)*time.Second))
 		return nil, errors.New("用户名或密码错误")
 	}
 
@@ -89,7 +90,7 @@ func authenticator(ctx *gin.Context) (interface{}, error) {
 
 	// 7.登录正确
 	// 删除错误 redis 中的次数
-	_, _ = conn.Del(key)
+	_, _ = cache.Del(key)
 
 	// 更新数据库中登录信息
 	common.DB.Model(&model.User{}).
@@ -99,7 +100,7 @@ func authenticator(ctx *gin.Context) (interface{}, error) {
 			"last_login_time": carbon.Now(),
 		})
 
-	// 8.设置 Context，方便后面使用
+	// 8.设置 Context，方便后面验证使用
 	ctx.Set("Username", user.Username)
 
 	// 9.查看系统是否开启双因子认证
@@ -116,10 +117,20 @@ func authenticator(ctx *gin.Context) (interface{}, error) {
 		// 已经绑定了，则需要验证用户的验证码
 		if !utils.ValidateTOTPCode(req.VerificationCode, user.Secret) {
 			times += 1
-			conn.Set(key, times, gedis.WithExpire(time.Duration(common.Config.Login.LockTime)*time.Second))
+			cache.Set(key, times, gedis.WithExpire(time.Duration(common.Config.Login.LockTime)*time.Second))
 			return nil, errors.New("手机令牌验证码错误")
 		}
 	}
+
+	// 10.将用户信息存入 Redis 中，方便最近的请求使用，而不需要再去完整的查询数据库
+	// 将用户信息编码为 json
+	jsonData, err := json.Marshal(user)
+	if err != nil {
+		common.SystemLog.Error(err.Error())
+		return nil, errors.New("用户信息编码失败错误")
+	}
+	userInfoKey := common.GenerateRedisKey(common.RKP.UserInfo, user.Username)
+	cache.Set(userInfoKey, jsonData, gedis.WithExpire(common.UserInfoExpireTime))
 
 	// 以指针的方式将数据传递给 PayloadFunc 函数继续处理
 	return &user, nil
@@ -131,19 +142,10 @@ func authenticator(ctx *gin.Context) (interface{}, error) {
 func payloadFunc(data interface{}) jwt.MapClaims {
 	// 断言判断获取传递过来数据是不是用户数据
 	if user, ok := data.(*model.User); ok {
-		// 封装一些常用的字段，方便直接使用前端和后端都能直接使用
+		// 封装 id 和 username 这种几乎不会变的字段,方便后面直接使用
 		return jwt.MapClaims{
-			jwt.IdentityKey: user.Username,     // 用户名
-			"Username":      user.Username,     // 用户名
-			"ENName":        user.ENName,       // 英文名
-			"CNName":        user.CNName,       // 中文名
-			"Avatar":        user.Avatar,       // 用户头像
-			"Phone":         user.Phone,        // 用户手机
-			"Email":         user.Email,        // 邮箱
-			"RoleId":        user.Role.Id,      // 角色 Id
-			"RoleName":      user.Role.Name,    // 角色名称
-			"DepartmentId":  user.DepartmentId, // 部门 Id
-			"JobName":       user.JobName,      // 岗位名称
+			jwt.IdentityKey: user.Id,       // 用户Id
+			"Username":      user.Username, // 用户名
 		}
 	}
 	return jwt.MapClaims{}
@@ -213,9 +215,11 @@ func unauthorized(ctx *gin.Context, code int, message string) {
 
 // 用户登录后的中间件，用于解析 Token
 func identityHandler(ctx *gin.Context) interface{} {
-	// 从 Context 中获取用户名
-	claims := jwt.ExtractClaims(ctx)
-	username, _ := claims["identity"].(string)
+	// 获取登录用户用户名
+	username, err := utils.GetUsernameFromContext(ctx)
+	if err != nil {
+		return nil
+	}
 	return &model.User{
 		Username: username,
 	}
@@ -244,12 +248,16 @@ func authorizator(data interface{}, ctx *gin.Context) bool {
 
 // 注销登录
 func logoutResponse(ctx *gin.Context, code int) {
-	// 获取用户名
-	claims := jwt.ExtractClaims(ctx)
-	username, _ := claims["identity"].(string)
+	// 获取登录用户用户名
+	username, err := utils.GetUsernameFromContext(ctx)
+	if err != nil {
+		response.FailedWithMessage("获取登录用户信息异常")
+		return
+	}
 
 	// 清理 Redis 保存的数据
 	cache := gedis.NewOperation()
 	_, _ = cache.Del(common.GenerateRedisKey(common.RKP.LoginToken, username))
+	_, _ = cache.Del(common.GenerateRedisKey(common.RKP.UserInfo, username))
 	response.Success()
 }

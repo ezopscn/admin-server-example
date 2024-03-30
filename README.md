@@ -34,6 +34,7 @@
 - [x] Gorm：数据库 ORM 管理框架, 可自行扩展多种数据库类型 [:octocat:](https://gorm.io/gorm)
 - [x] Carbon：简单、语义化且对开发人员友好的 datetime 包 [:octocat:](https://github.com/golang-module/carbon)
 - [x] Redis：Redis 客户端 [:octocat:](https://github.com/redis/go-redis)
+- [x] Sonic：字节开源的高性能 JSON 库 [:octocat:](https://github.com/bytedance/sonic)
 - [x] Jwt：用户认证, 登入登出一键搞定 [:octocat:](https://github.com/appleboy/gin-jwt)
 - [x] OPT：OPT 双因子认证库 [:octocat:](https://github.com/pquerna/otp)
 - [x] GoMail：发送邮件 [:octocat:](https://github.com/itrepablik/gomail)
@@ -72,6 +73,9 @@ go get -u github.com/golang-module/carbon/v2
 
 # Redis 客户端
 go get -u github.com/redis/go-redis/v9
+
+# Sonic Json 库
+go get github.com/bytedance/sonic
 
 # JWT 认证
 go get -u github.com/appleboy/gin-jwt/v2

@@ -22,18 +22,6 @@ func GetUsernameFromContext(ctx *gin.Context) (username string, err error) {
 	return
 }
 
-// 从 Context 中获取 Phone
-func GetPhoneFromContext(ctx *gin.Context) (phone string, err error) {
-	phone, err = ExtractStringFromContext(ctx, "Phone")
-	return
-}
-
-// 从 Context 中获取 Email
-func GetEmailFromContext(ctx *gin.Context) (email string, err error) {
-	email, err = ExtractStringFromContext(ctx, "Email")
-	return
-}
-
 // 从 Context 中获取 Uint 属性
 func ExtractUintFromContext(ctx *gin.Context, keyword string) (value uint, err error) {
 	claims := jwt.ExtractClaims(ctx)
@@ -42,21 +30,5 @@ func ExtractUintFromContext(ctx *gin.Context, keyword string) (value uint, err e
 		return value, fmt.Errorf("获取请求用户的%s失败", keyword)
 	}
 	value = uint(v)
-	return
-}
-
-// 从 Context 中获取 RoleId
-func GetRoleIdFromContext(ctx *gin.Context) (roleId uint, err error) {
-	roleId, err = ExtractUintFromContext(ctx, "RoleId")
-	return
-}
-
-// 从 Context 中获取 Username 和 RoleId
-func GetUsernameAndRoleIdFromContext(ctx *gin.Context) (username string, roleId uint, err error) {
-	username, err = ExtractStringFromContext(ctx, "Username")
-	if err != nil {
-		return
-	}
-	roleId, err = ExtractUintFromContext(ctx, "RoleId")
 	return
 }
