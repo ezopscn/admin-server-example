@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	jwt "github.com/appleboy/gin-jwt/v2"
@@ -121,16 +120,6 @@ func authenticator(ctx *gin.Context) (interface{}, error) {
 			return nil, errors.New("手机令牌验证码错误")
 		}
 	}
-
-	// 10.将用户信息存入 Redis 中，方便最近的请求使用，而不需要再去完整的查询数据库
-	// 将用户信息编码为 json
-	jsonData, err := json.Marshal(user)
-	if err != nil {
-		common.SystemLog.Error(err.Error())
-		return nil, errors.New("用户信息编码失败错误")
-	}
-	userInfoKey := common.GenerateRedisKey(common.RKP.UserInfo, user.Username)
-	cache.Set(userInfoKey, jsonData, gedis.WithExpire(common.UserInfoExpireTime))
 
 	// 以指针的方式将数据传递给 PayloadFunc 函数继续处理
 	return &user, nil
