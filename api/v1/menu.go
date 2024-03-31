@@ -2,12 +2,27 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
+	"server/common"
+	"server/model"
 	"server/pkg/response"
 	"server/pkg/utils"
 	"server/service"
 )
 
-// 获取菜单列表
+// 获取所有菜单
+func GETMenuAllHandler(ctx *gin.Context) {
+	var menus []model.Menu
+	err := common.DB.Find(&menus).Error
+	if err != nil {
+		response.FailedWithMessage("获取所有菜单数据失败")
+		return
+	}
+	response.SuccessWithData(gin.H{
+		"menus": menus,
+	})
+}
+
+// 获取用户菜单列表
 func GETMenuListHandler(ctx *gin.Context) {
 	// 获取登录用户基本关联信息
 	cusername, err := utils.GetUsernameFromContext(ctx)
