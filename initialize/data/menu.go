@@ -25,7 +25,7 @@ var menus = []model.Menu{
 		Label:     "系统配置",
 		Icon:      "SettingOutlined",
 		Key:       "/system",
-		Sort:      9000,
+		Sort:      91,
 		ParentId:  0,
 		Children: []model.Menu{
 			{
@@ -33,7 +33,7 @@ var menus = []model.Menu{
 				Label:     "部门管理",
 				Icon:      "",
 				Key:       "/system/department",
-				Sort:      9010,
+				Sort:      10,
 				ParentId:  2,
 			},
 			{
@@ -41,7 +41,7 @@ var menus = []model.Menu{
 				Label:     "用户管理",
 				Icon:      "",
 				Key:       "/system/user",
-				Sort:      9020,
+				Sort:      20,
 				ParentId:  2,
 			},
 			{
@@ -49,7 +49,7 @@ var menus = []model.Menu{
 				Label:     "角色管理",
 				Icon:      "",
 				Key:       "/system/role",
-				Sort:      9030,
+				Sort:      30,
 				ParentId:  2,
 			},
 			{
@@ -57,7 +57,7 @@ var menus = []model.Menu{
 				Label:     "菜单管理",
 				Icon:      "",
 				Key:       "/system/menu",
-				Sort:      9040,
+				Sort:      40,
 				ParentId:  2,
 			},
 			{
@@ -65,7 +65,7 @@ var menus = []model.Menu{
 				Label:     "接口管理",
 				Icon:      "",
 				Key:       "/system/api",
-				Sort:      9050,
+				Sort:      50,
 				ParentId:  2,
 			},
 			{
@@ -73,7 +73,7 @@ var menus = []model.Menu{
 				Label:     "授权管理",
 				Icon:      "",
 				Key:       "/system/privilege",
-				Sort:      9060,
+				Sort:      60,
 				ParentId:  2,
 			},
 			{
@@ -81,7 +81,7 @@ var menus = []model.Menu{
 				Label:     "服务配置",
 				Icon:      "",
 				Key:       "/system/setting",
-				Sort:      9070,
+				Sort:      70,
 				ParentId:  2,
 			},
 		},
@@ -91,7 +91,7 @@ var menus = []model.Menu{
 		Label:     "日志审计",
 		Icon:      "InsuranceOutlined",
 		Key:       "/log",
-		Sort:      9100,
+		Sort:      92,
 		ParentId:  0,
 		Roles: []model.Role{
 			roles[1],
@@ -102,7 +102,7 @@ var menus = []model.Menu{
 				Label:     "登录日志",
 				Icon:      "",
 				Key:       "/log/login",
-				Sort:      9110,
+				Sort:      10,
 				ParentId:  10,
 				Roles: []model.Role{
 					roles[1],
@@ -113,7 +113,7 @@ var menus = []model.Menu{
 				Label:     "操作日志",
 				Icon:      "",
 				Key:       "/log/operation",
-				Sort:      9120,
+				Sort:      20,
 				ParentId:  10,
 				Roles: []model.Role{
 					roles[1],
@@ -126,7 +126,7 @@ var menus = []model.Menu{
 		Label:     "个人中心",
 		Icon:      "UserOutlined",
 		Key:       "/me",
-		Sort:      9200,
+		Sort:      93,
 		ParentId:  0,
 		Roles: []model.Role{
 			roles[1],
@@ -137,7 +137,7 @@ var menus = []model.Menu{
 		Label:     "获取帮助",
 		Icon:      "FileProtectOutlined",
 		Key:       "/help",
-		Sort:      9999,
+		Sort:      100,
 		ParentId:  0,
 		Roles: []model.Role{
 			roles[1],

@@ -61,7 +61,7 @@ var users = []model.User{
 		Avatar:           "https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png",
 		Birthday:         carbon.Now(),
 		CreatorId:        0,
-		Status:           &common.Disable,
+		Status:           &common.Active,
 		RoleId:           2,
 	},
 }
