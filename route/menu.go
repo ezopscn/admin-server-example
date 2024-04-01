@@ -16,6 +16,9 @@ func MenuPublicRoutes(rg *gin.RouterGroup, auth *jwt.GinJWTMiddleware) gin.IRout
 // 菜单授权路由组
 func MenuCasbinRoutes(rg *gin.RouterGroup, auth *jwt.GinJWTMiddleware) gin.IRoutes {
 	crg := rg.Group("/menu").Use(auth.MiddlewareFunc())
-	crg.GET("/all", v1.GETMenuAllHandler) // 获取所有菜单
+	crg.GET("/all", v1.GETMenuAllHandler)        // 获取所有菜单
+	crg.PUT("", v1.AddMenuHandler)               // 添加菜单
+	crg.PATCH("", v1.UpdateMenuHandler)          // 更新菜单
+	crg.DELETE("/:menuId", v1.DeleteMenuHandler) // 删除菜单
 	return crg
 }

@@ -37,6 +37,7 @@
 - [x] Sonic：字节开源的高性能 JSON 库 [:octocat:](https://github.com/bytedance/sonic)
 - [x] Jwt：用户认证, 登入登出一键搞定 [:octocat:](https://github.com/appleboy/gin-jwt)
 - [x] OPT：OPT 双因子认证库 [:octocat:](https://github.com/pquerna/otp)
+- [x] Copier：结构体转换库 [:octocat:](https://github.com/jinzhu/copier)
 - [x] GoMail：发送邮件 [:octocat:](https://github.com/itrepablik/gomail)
 - [x] Casbin：一个强大的、高效的开源访问控制框架 [:octocat:](https://casbin.org/zh/docs/overview)
 
@@ -82,6 +83,9 @@ go get -u github.com/appleboy/gin-jwt/v2
 
 # OPT 认证
 go get -u github.com/pquerna/otp
+
+# 结构体转换
+go get -u github.com/jinzhu/copier
 
 # 邮件发送
 go get -u github.com/itrepablik/gomail
