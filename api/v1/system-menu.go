@@ -121,13 +121,21 @@ func DeleteMenuHandler(ctx *gin.Context) {
 		response.FailedWithMessage("菜单删除失败，需要删除的菜单id不合法")
 		return
 	}
-	// Unscoped 永久删除，不是软删除
-	err = common.DB.Where("id = ?", id).Unscoped().Delete(&model.Menu{}).Error
+
+	// 查询菜单，看是否还有子菜单，如果有，则无法删除
+	var menus []model.Menu
+	common.DB.Where("parent_id = ?", id).Find(&menus)
+	if len(menus) != 0 {
+		response.FailedWithMessage("该菜单下面还有子菜单，无法进行删除")
+		return
+	}
+
+	// 不使用 Unscoped 则是软删除
+	err = common.DB.Where("id = ?", id).Delete(&model.Menu{}).Error
 	if err != nil {
 		response.FailedWithMessage("菜单删除失败，请刷新后重试")
 		return
 	}
-	// 需要删除关联数据
 
 	response.Success()
 }

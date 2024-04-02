@@ -8,7 +8,8 @@ type User struct {
 	Username               string        `gorm:"uniqueIndex:uidx_username;comment:用户名（工号）" json:"username"`
 	ENName                 string        `gorm:"not null;comment:英文名（没有就用拼音）" json:"en_name"`
 	CNName                 string        `gorm:"not null;comment:中文名" json:"cn_name"`
-	JobName                string        `gorm:"not null;comment:岗位名称" json:"job_name"`
+	JobId                  uint          `gorm:"comment:工作岗位id" json:"job_id"` // 关联工作岗位
+	Job                    *Job          `gorm:"foreignKey:JobId;comment:工作岗位" json:"job,omitempty"`
 	Phone                  string        `gorm:"uniqueIndex:uidx_phone;comment:手机号" json:"phone"`
 	ShowPhone              *uint         `gorm:"type:tinyint(1);default:1;comment:是否显示手机号(0=不显示,1=显示)" json:"show_phone"`
 	Email                  string        `gorm:"uniqueIndex:uidx_email;comment:邮箱" json:"email"`

@@ -12,6 +12,7 @@ func MigrateTable() {
 	_ = common.DB.AutoMigrate(new(model.Area))       // 区
 	_ = common.DB.AutoMigrate(new(model.Street))     // 街道
 	_ = common.DB.AutoMigrate(new(model.Department)) // 部门
+	_ = common.DB.AutoMigrate(new(model.Job))        // 工作岗位
 	_ = common.DB.AutoMigrate(new(model.User))       // 用户
 	_ = common.DB.AutoMigrate(new(model.Menu))       // 菜单
 	_ = common.DB.AutoMigrate(new(model.Role))       // 角色
