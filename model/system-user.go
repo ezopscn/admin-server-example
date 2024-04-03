@@ -16,8 +16,8 @@ type User struct {
 	Password               string        `gorm:"not null;comment:密码" json:"-"` // json 中不显示该字段
 	Secret                 string        `gorm:"comment:双因子认证密钥" json:"-"`     // json 中不显示该字段
 	JoinTime               carbon.Carbon `gorm:"comment:入职日期" json:"join_time"`
-	DepartmentId           uint          `gorm:"comment:部门id" json:"department_id"` // 关联部门
-	Department             *Department   `gorm:"foreignKey:DepartmentId;comment:部门" json:"department,omitempty"`
+	ManageDepartments      []Department  `gorm:"many2many:department_manage_user" json:"manage_departments,omitempty"`
+	Departments            []Department  `gorm:"many2many:department_user" json:"departments,omitempty"`
 	OfficeProvinceId       uint          `gorm:"comment:办公地点省id" json:"office_province_id"` // 关联省
 	OfficeProvince         *Province     `gorm:"foreignKey:OfficeProvinceId;comment:省" json:"office_province,omitempty"`
 	OfficeCityId           uint          `gorm:"comment:办公地点市id" json:"office_city_id"` // 关联市

@@ -3,6 +3,7 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"server/common"
+	"server/dto"
 	"server/model"
 	"server/pkg/response"
 	"server/pkg/utils"
@@ -75,5 +76,18 @@ func GETSpecifyUserInfoHandler(ctx *gin.Context) {
 
 	response.SuccessWithData(gin.H{
 		"info": user,
+	})
+}
+
+// 获取基础用户信息列表
+func GETAllUserListHandler(ctx *gin.Context) {
+	var users []dto.BaseUserInfo
+	err := common.DB.Model(model.User{}).Find(&users).Error
+	if err != nil {
+		response.FailedWithMessage("查询基础用户列表失败")
+		return
+	}
+	response.SuccessWithData(gin.H{
+		"list": users,
 	})
 }

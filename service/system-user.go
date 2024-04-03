@@ -22,7 +22,8 @@ func GetBaseUserInfoByUsername(username string) (user model.User, err error) {
 
 	// 基础关联信息, 使用 clause.Associations 可以预加载所有字段
 	err = common.DB.
-		Preload("Department").
+		Preload("ManageDepartments").
+		Preload("Departments").
 		Preload("Job").
 		Preload("Role").
 		Preload("OfficeProvince").

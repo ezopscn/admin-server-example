@@ -12,38 +12,48 @@ var departments = []model.Department{
 	{
 		BaseModel: model.BaseModel{Id: 1},
 		Name:      "集团总部",
-		LeaderId:  1,
 		ParentId:  0,
+		Users: []model.User{
+			users[0],
+		},
+		ManageUser: []model.User{
+			users[0],
+		},
 		Children: []model.Department{
 			{
 				BaseModel: model.BaseModel{Id: 2},
 				Name:      "访客",
-				LeaderId:  2,
 				ParentId:  1,
+				Users: []model.User{
+					users[1],
+				},
+				ManageUser: []model.User{
+					users[0],
+					users[1],
+				},
 			},
 			{
 				BaseModel: model.BaseModel{Id: 3},
 				Name:      "研发中心",
-				LeaderId:  1,
 				ParentId:  1,
 				Children: []model.Department{
 					{
 						BaseModel: model.BaseModel{Id: 4},
 						Name:      "开发部",
-						LeaderId:  1,
 						ParentId:  3,
 					},
 					{
 						BaseModel: model.BaseModel{Id: 5},
 						Name:      "测试部",
-						LeaderId:  1,
 						ParentId:  3,
 					},
 					{
 						BaseModel: model.BaseModel{Id: 6},
 						Name:      "运维部",
-						LeaderId:  1,
 						ParentId:  3,
+						Users: []model.User{
+							users[0],
+						},
 					},
 				},
 			},

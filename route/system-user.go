@@ -12,6 +12,7 @@ func UserPublicRoutes(rg *gin.RouterGroup, auth *jwt.GinJWTMiddleware) gin.IRout
 	prg.GET("/count", v1.GETUserCountHandler)                // 用户数量统计
 	prg.GET("/info", v1.GETCurrentUserInfoHandler)           // 获取当前用户的信息
 	prg.GET("/info/:username", v1.GETSpecifyUserInfoHandler) // 获取指定用户的信息
+	prg.GET("/all", v1.GETAllUserListHandler)                // 获取所有用户基础信息列表
 	return prg
 }
 
