@@ -18,6 +18,7 @@ func GETMenuAllHandler(ctx *gin.Context) {
 	var menus []model.Menu
 	err := common.DB.Order("sort").Find(&menus).Error
 	if err != nil {
+		common.SystemLog.Error(err.Error())
 		response.FailedWithMessage("获取所有菜单数据失败")
 		return
 	}
@@ -31,11 +32,13 @@ func GETMenuListHandler(ctx *gin.Context) {
 	// 获取登录用户基本关联信息
 	cusername, err := utils.GetUsernameFromContext(ctx)
 	if err != nil {
+		common.SystemLog.Error(err.Error())
 		response.FailedWithMessage("获取登录用户信息异常")
 		return
 	}
 	cuser, err := service.GetBaseUserInfoByUsername(cusername)
 	if err != nil {
+		common.SystemLog.Error(err.Error())
 		response.FailedWithMessage("查询登录用户基本信息失败")
 		return
 	}
@@ -43,6 +46,7 @@ func GETMenuListHandler(ctx *gin.Context) {
 	// 查询角色的菜单，如果角色是系统预设超级管理员，则获取所有菜单
 	menus, err := service.GetMenuListByRoleId(cuser.RoleId)
 	if err != nil {
+		common.SystemLog.Error(err.Error())
 		response.FailedWithMessage("查询菜单列表失败")
 		return
 	}
@@ -56,6 +60,7 @@ func GETMenuListHandler(ctx *gin.Context) {
 func AddMenuHandler(ctx *gin.Context) {
 	var req dto.AddMenuRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
+		common.SystemLog.Error(err.Error())
 		response.FailedWithMessage("解析添加菜单数据失败")
 		return
 	}
@@ -69,12 +74,14 @@ func AddMenuHandler(ctx *gin.Context) {
 	// 结构体转换
 	var menu model.Menu
 	if err := copier.Copy(&menu, &req); err != nil {
+		common.SystemLog.Error(err.Error())
 		response.FailedWithMessage("菜单数据不合法")
 		return
 	}
 
 	// 添加菜单
 	if err := common.DB.Create(&menu).Error; err != nil {
+		common.SystemLog.Error(err.Error())
 		response.FailedWithMessage("菜单添加失败，请检查填写的内容是否正确")
 		return
 	}
@@ -86,6 +93,7 @@ func AddMenuHandler(ctx *gin.Context) {
 func UpdateMenuHandler(ctx *gin.Context) {
 	var req dto.UpdateMenuRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
+		common.SystemLog.Error(err.Error())
 		response.FailedWithMessage("解析修改菜单数据失败")
 		return
 	}
@@ -100,12 +108,14 @@ func UpdateMenuHandler(ctx *gin.Context) {
 	m := make(map[string]interface{})
 	b, _ := sonic.Marshal(&req)
 	if err := sonic.Unmarshal(b, &m); err != nil {
+		common.SystemLog.Error(err.Error())
 		response.FailedWithMessage("菜单数据不合法")
 		return
 	}
 
 	// 更新菜单
 	if err := common.DB.Model(&model.Menu{}).Where("id = ?", req.Id).Updates(m).Error; err != nil {
+		common.SystemLog.Error(err.Error())
 		response.FailedWithMessage("菜单修改失败，请检查填写的内容是否正确")
 		return
 	}

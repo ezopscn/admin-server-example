@@ -12,6 +12,7 @@ func GETRoleCountHandler(ctx *gin.Context) {
 	// 查询角色数量
 	var count int64
 	if err := common.DB.Model(&model.Role{}).Count(&count).Error; err != nil {
+		common.SystemLog.Error(err.Error())
 		response.FailedWithMessage("获取角色统计失败")
 		return
 	}

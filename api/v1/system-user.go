@@ -15,6 +15,7 @@ func GETUserCountHandler(ctx *gin.Context) {
 	// 查询用户数量
 	var count int64
 	if err := common.DB.Model(&model.User{}).Count(&count).Error; err != nil {
+		common.SystemLog.Error(err.Error())
 		response.FailedWithMessage("获取用户统计失败")
 		return
 	}
@@ -28,6 +29,7 @@ func GETCurrentUserInfoHandler(ctx *gin.Context) {
 	// 获取登录用户用户名
 	username, err := utils.GetUsernameFromContext(ctx)
 	if err != nil {
+		common.SystemLog.Error(err.Error())
 		response.FailedWithMessage("获取登录用户信息异常")
 		return
 	}
@@ -35,6 +37,7 @@ func GETCurrentUserInfoHandler(ctx *gin.Context) {
 	// 获取用户基本关联信息
 	user, err := service.GetBaseUserInfoByUsername(username)
 	if err != nil {
+		common.SystemLog.Error(err.Error())
 		response.FailedWithMessage("查询用户基本信息失败")
 		return
 	}
@@ -49,11 +52,13 @@ func GETSpecifyUserInfoHandler(ctx *gin.Context) {
 	// 获取登录用户基本关联信息
 	cusername, err := utils.GetUsernameFromContext(ctx)
 	if err != nil {
+		common.SystemLog.Error(err.Error())
 		response.FailedWithMessage("获取登录用户信息异常")
 		return
 	}
 	cuser, err := service.GetBaseUserInfoByUsername(cusername)
 	if err != nil {
+		common.SystemLog.Error(err.Error())
 		response.FailedWithMessage("查询登录用户基本信息失败")
 		return
 	}
@@ -62,6 +67,7 @@ func GETSpecifyUserInfoHandler(ctx *gin.Context) {
 	username := ctx.Param("username")
 	user, err := service.GetBaseUserInfoByUsername(username)
 	if err != nil {
+		common.SystemLog.Error(err.Error())
 		response.FailedWithMessage("查询指定用户基本信息失败")
 		return
 	}
@@ -84,6 +90,7 @@ func GETAllUserListHandler(ctx *gin.Context) {
 	var users []dto.BaseUserInfo
 	err := common.DB.Model(model.User{}).Find(&users).Error
 	if err != nil {
+		common.SystemLog.Error(err.Error())
 		response.FailedWithMessage("查询基础用户列表失败")
 		return
 	}

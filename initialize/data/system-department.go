@@ -16,7 +16,7 @@ var departments = []model.Department{
 		Users: []model.User{
 			users[0],
 		},
-		ManageUser: []model.User{
+		ManageUsers: []model.User{
 			users[0],
 		},
 		Children: []model.Department{
@@ -27,7 +27,7 @@ var departments = []model.Department{
 				Users: []model.User{
 					users[1],
 				},
-				ManageUser: []model.User{
+				ManageUsers: []model.User{
 					users[0],
 					users[1],
 				},

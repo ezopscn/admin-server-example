@@ -7,6 +7,7 @@ type Role struct {
 	Description string `gorm:"comment:角色说明" json:"description"`
 	Users       []User `gorm:"-" json:"users,omitempty"`                   // 用户
 	Menus       []Menu `gorm:"many2many:role_menu" json:"menus,omitempty"` // 菜单和角色多对多
+	MenuIds     []uint `gorm:"-" json:"menu_ids"`
 }
 
 // 自定义表名

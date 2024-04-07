@@ -30,3 +30,10 @@ func IsPhone(phone string) bool {
 	reg := regexp.MustCompile(pattern)
 	return reg.MatchString(phone)
 }
+
+// 名称合法性验证
+func IsName(name string) bool {
+	pattern := `^[\w\u4e00-\u9fa5-]+$`
+	matched, _ := regexp.MatchString(pattern, name)
+	return matched
+}

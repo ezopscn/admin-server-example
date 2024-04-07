@@ -16,5 +16,8 @@ func DepartmentPublicRoutes(rg *gin.RouterGroup, auth *jwt.GinJWTMiddleware) gin
 // 部门授权路由组
 func DepartmentCasbinRoutes(rg *gin.RouterGroup, auth *jwt.GinJWTMiddleware) gin.IRoutes {
 	crg := rg.Group("/department").Use(auth.MiddlewareFunc())
+	crg.PUT("", v1.AddDepartmentHandler)                     // 添加部门
+	crg.PATCH("", v1.UpdateDepartmentHandler)                // 更新部门
+	crg.DELETE("/:departmentId", v1.DeleteDepartmentHandler) // 删除部门
 	return crg
 }

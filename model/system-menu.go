@@ -10,6 +10,7 @@ type Menu struct {
 	ParentId  uint   `gorm:"comment:父id" json:"parent_id"`
 	Children  []Menu `gorm:"-" json:"children"`
 	Roles     []Role `gorm:"many2many:role_menu" json:"roles,omitempty"` // 菜单和角色多对多
+	RoleIds   []uint `gorm:"-" json:"role_ids"`
 }
 
 // 自定义表名
